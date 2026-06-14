@@ -1,5 +1,3 @@
-// config/db.js
-
 import mongoose from "mongoose";
 
 const connectDB = async () => {
@@ -8,7 +6,9 @@ const connectDB = async () => {
 
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(error.message);
+    console.error("MongoDB connection failed:", error.message);
+
+    // IMPORTANT: don't crash silently
     process.exit(1);
   }
 };

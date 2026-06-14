@@ -16,6 +16,8 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import recommendationRoutes from "./routes/recommendationRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
+import dns from "dns";
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 const app = express();
 
@@ -29,9 +31,20 @@ app.use(
   }),
 );
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://mesob-furniture.vercel.app",
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );
